@@ -122,6 +122,26 @@ NXVIM_CONFIG=examples cargo run -p nxvim -- examples/sample.txt
 (run from a checkout that sits next to your nxvim checkout, or point `dir=` at
 this repo — see `examples/init.lua`).
 
+## Tests
+
+This plugin carries a Lua test suite (`test/popup_spec.lua`) built on nxvim's
+native `nx.test` framework. Run it headlessly:
+
+```sh
+nxvim --test-plugin .
+```
+
+The suite drives a real editor — feed a leader prefix, wait for the debounced
+popup, and assert on the floating window's text via `t:float()`:
+
+```lua
+nx.test.it("shows the leader menu on pause", function(t)
+  t:feed("<Space>")
+  local float = t:wait_for(function() return t:float() end)
+  nx.test.expect(float.text).to_contain("write")
+end)
+```
+
 ## License
 
 MIT © David Rios
