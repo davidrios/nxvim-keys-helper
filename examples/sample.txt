@@ -1,0 +1,20 @@
+nxvim-keys-helper demo
+======================
+
+Press <leader> (Space) and pause — a popup appears in the bottom-right with the
+keys that can follow:
+
+    w   write
+    q   quit
+    f   +file      (a group: leads to ff / fg)
+    g   +git       (a group: leads to gs / gc)
+
+Type into a group (e.g. f) and the popup refreshes to that group's keys.
+
+The built-in command grammar feeds the same popup — try pausing after:
+
+    z        viewport commands (zt / zz / zb ...)
+    g        go-to motions (gg / gt ...) merged with any g-prefixed maps
+    <C-w>    window commands
+    f        an "awaiting input" hint card (Find character)
+    d        operator-pending hint
