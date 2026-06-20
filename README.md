@@ -37,6 +37,7 @@ Then run `:PluginSync` to clone it. That's it — start typing a prefix and paus
 ```lua
 require("nxvim-keys-helper").setup({
   delay = 200,          -- pause (ms) after the last key before the popup shows
+  timeout = false,      -- vim.o.timeout: false keeps a paused prefix pending; true restores the mapping timeout
   relative = "bottom",  -- float anchor: "bottom" | "cursor" | "editor"
   border = "rounded",   -- "rounded" | "single" | "double" | "solid" | "none"
   group_marker = "+",   -- shown before a group name, e.g. "+file"

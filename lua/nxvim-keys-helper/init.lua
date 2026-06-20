@@ -61,8 +61,15 @@ local DEFAULT_HIGHLIGHTS = {
 -- the LAST key before the popup appears — real which-key uses ~200ms so quick,
 -- deliberate sequences stay invisible. `relative`/`border` are passed straight to
 -- the float mount; "bottom" is the classic bottom-right which-key spot.
+-- `timeout` is applied straight to `vim.o.timeout`. It defaults to FALSE — a
+-- which-key wants a paused prefix to stay pending for as long as you look at the
+-- popup, but vim's default `timeout = true` commits the prefix to the built-in
+-- grammar after `timeoutlen` (which is what strands the LSP `g`-maps as
+-- `available == false`, see lines_for). Disabling it keeps the sequence open. Pass
+-- `timeout = true` to setup() to keep vim's mapping timeout instead.
 M.config = {
   delay = 200,
+  timeout = false,
   relative = "bottom",
   border = "rounded",
   group_marker = "+", -- prefix shown before a group's name (e.g. "+file")
@@ -218,6 +225,8 @@ end
 -- setup(opts) — wire the popup. Idempotent: a second call re-applies config and
 -- highlights but does not mount a second component.
 --   opts.delay         pause (ms) after the last key before the popup shows (200)
+--   opts.timeout       value for vim.o.timeout — false (the default) keeps a paused
+--                      prefix pending; true restores vim's mapping timeout
 --   opts.relative      float anchor: "bottom" | "cursor" | "editor" ("bottom")
 --   opts.border        "rounded" | "single" | "double" | "solid" | "none"
 --   opts.group_marker  string shown before a group name ("+")
@@ -229,13 +238,19 @@ function M.setup(opts)
     error("nxvim-keys-helper.setup: opts must be a table", 2)
   end
 
-  for _, k in ipairs({ "delay", "relative", "border", "group_marker" }) do
+  for _, k in ipairs({ "delay", "timeout", "relative", "border", "group_marker" }) do
     if opts[k] ~= nil then
       M.config[k] = opts[k]
     end
   end
   M.config.highlights = opts.highlights or {}
   apply_highlights(M.config.highlights)
+
+  -- Keep the prefix pending while the popup is up: by default `timeout = false`
+  -- disables vim's mapping timeout, so a paused leader sequence never commits to
+  -- the built-in grammar out from under the popup. A user who passed
+  -- `timeout = true` gets vim's normal behavior back.
+  vim.o.timeout = M.config.timeout
 
   if opts.spec then
     M.add(opts.spec)
