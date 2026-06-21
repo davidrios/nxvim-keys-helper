@@ -114,14 +114,14 @@ built-in motions too, not just your maps:
 
 ## Trying it locally
 
-This repo ships a runnable demo:
+This repo ships a runnable demo. From a checkout of this repo:
 
 ```sh
-NXVIM_CONFIG=examples cargo run -p nxvim -- examples/sample.txt
+NXVIM_CONFIG=examples nxvim examples/sample.txt
 ```
 
-(run from a checkout that sits next to your nxvim checkout, or point `dir=` at
-this repo — see `examples/init.lua`).
+The demo's `init.lua` loads the plugin straight from this checkout (`dir=`), so
+no `:PluginSync` is needed — see `examples/init.lua`.
 
 ## Tests
 

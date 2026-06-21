@@ -1,6 +1,6 @@
 -- Runnable demo for nxvim-keys-helper.
 --
---     NXVIM_CONFIG=examples cargo run -p nxvim -- examples/sample.txt
+--     NXVIM_CONFIG=examples nxvim examples/sample.txt
 --
 -- TRY IT: press <leader> (Space) and pause — the popup lists the keys below with
 -- their descriptions, `f`/`g` shown as named groups. Type into a group (`f`) and it
